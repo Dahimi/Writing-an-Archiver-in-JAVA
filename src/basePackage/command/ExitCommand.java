@@ -1,5 +1,5 @@
-package command;
-import utilities.*;
+package basePackage.command;
+import basePackage.utilities.*;
 public class ExitCommand implements Command {
 
 	@Override

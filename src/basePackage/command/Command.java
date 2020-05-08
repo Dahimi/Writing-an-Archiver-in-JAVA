@@ -1,4 +1,4 @@
-package command;
+package basePackage.command;
 
 public interface Command {
 	void execute() throws Exception;
