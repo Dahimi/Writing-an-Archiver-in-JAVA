@@ -2,8 +2,10 @@ package basePackage;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.*;
 import java.util.zip.*;
 
+import basePackage.exception.NoSuchZipFileException;
 import basePackage.exception.PathNotFoundException;
 
 public class ZipFileManager {
@@ -20,6 +22,21 @@ public class ZipFileManager {
 
 	public void setZipFile(Path zipFile) {
 		this.zipFile = zipFile;
+	}
+	public List<FileProperties> getFileList() throws Exception{
+		if(!Files.isRegularFile(zipFile)) throw new NoSuchZipFileException();
+		List<FileProperties> list = new LinkedList<FileProperties>();
+		try(ZipInputStream zipInput = new ZipInputStream(Files.newInputStream(zipFile));){
+			ZipEntry ze = null;
+			while(	(ze = zipInput.getNextEntry()) != null) {
+				ByteArrayOutputStream tempOut =   new ByteArrayOutputStream();
+				 copyData(zipInput, tempOut);
+				FileProperties properties = new FileProperties(ze.getName(), tempOut.size(), ze.getCompressedSize(),ze.getMethod());
+				list.add(properties);
+				zipInput.closeEntry();
+			}
+		}
+		return list;
 	}
 	public void createZip(Path source) throws Exception{
 		if(! Files.exists(zipFile.getParent())) Files.createDirectories(zipFile.getParent());
