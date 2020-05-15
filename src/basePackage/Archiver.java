@@ -35,7 +35,7 @@ public class Archiver {
 				ConsoleHelper.writeMessage("You didn't select an archive or you selected an invalid file.");
 			}
 			catch(Exception e2) {
-				
+			
 				ConsoleHelper.writeMessage( "An error occurred. Please check the entered data.");
 			}
 		}while(operation != Operation.EXIT);
